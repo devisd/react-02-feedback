@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import './Feedback.module.css'
 
 export class Feedback extends Component {
