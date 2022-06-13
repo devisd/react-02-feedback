@@ -1,5 +1,4 @@
-import { Feedback } from "./Feedback/Feedback";
-
+import { Feedback } from './Feedback/Feedback';
 
 export const App = () => {
   return (
@@ -15,9 +14,7 @@ export const App = () => {
         padding: 120,
       }}
     >
-
-    <Feedback />
-      
+      <Feedback />
     </div>
   );
 };
