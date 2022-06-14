@@ -6,9 +6,11 @@ const Statistics = props => {
 
   return keys.map((el, i) => {
     return (
-      <p key={i}>
-        {el}: {values[i]}
-      </p>
+      <li key={i}>
+        <p>
+          {el}: {values[i]}
+        </p>
+      </li>
     );
   });
 };
