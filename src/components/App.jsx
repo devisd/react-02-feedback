@@ -14,7 +14,7 @@ export const App = () => {
         padding: 120,
       }}
     >
-      <Feedback />
+      <Feedback good={0} neutral={0} bad={0}/>
     </div>
   );
 };

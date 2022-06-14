@@ -1,5 +1,6 @@
 import { Component } from "react";
 import PropTypes from 'prop-types';
+import Statistics from './Statistics/Statistics'
 import './Feedback.module.css'
 
 export class Feedback extends Component {
@@ -17,17 +18,21 @@ export class Feedback extends Component {
   };
 
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0
+    good: this.props.good,
+    neutral: this.props.neutral,
+    bad: this.props.bad
   }
 
-  updateStatistic = () => {
-    this.setState(prevState => {
-      return { good: prevState.good + 1 };
-    });
-  }
-  
+  updateStatistic = (e) => {
+    const value = e.target.textContent;
+      return this.setState(prevState => {
+        return {
+          [value]: prevState[value] + 1
+        };
+      });
+    }
+
+
   render() {
     const state = Object.keys(this.state);
     const buttons = state.map(e => {
@@ -39,13 +44,12 @@ export class Feedback extends Component {
         <h1>Please leave feedback</h1>
         <div>
           {buttons}
-        </div>    
+        </div>
 
         <h2>Statistics</h2>
-        
-        <p>Good : {this.state.good}</p>
-        <p>Neutral : {this.state.neutral}</p>
-        <p>Bad : {this.state.bad}</p>
+        <div>
+          <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad}/>
+        </div>
       </div>
     )
   }
