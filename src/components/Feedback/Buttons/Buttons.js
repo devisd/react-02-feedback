@@ -1,11 +1,13 @@
 import React from 'react';
+import './Buttons.css';
 
-const Buttons = ({ props, onUpdateStatistic }) => {
+const Buttons = ({ good, neutral, bad, onUpdateStatistic }) => {
+  const props = { good, neutral, bad };
   const state = Object.keys(props);
 
   return state.map(e => {
     return (
-      <li key={e}>
+      <li className="button__item" key={e}>
         <button type="button" onClick={onUpdateStatistic}>
           {e}
         </button>

@@ -1,20 +1,22 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import Buttons from './Buttons/Buttons';
-import Statistics from './Statistics/Statistics';
-import './Feedback.module.css';
+import Buttons from './Buttons';
+import Statistics from './Statistics';
+import './Feedback.css';
 
-export class Feedback extends Component {
+class Feedback extends Component {
   static defaultProps = {
     good: 0,
     neutral: 0,
     bad: 0,
+    total: 0,
   };
 
   static propTypes = {
     bad: PropTypes.number.isRequired,
     good: PropTypes.number.isRequired,
     neutral: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired,
   };
 
   state = {
@@ -25,6 +27,7 @@ export class Feedback extends Component {
 
   updateStatistic = e => {
     const value = e.target.textContent;
+
     return this.setState(prevState => {
       return {
         [value]: prevState[value] + 1,
@@ -32,11 +35,18 @@ export class Feedback extends Component {
     });
   };
 
+  // countTotalFeedback() {
+  //   let total = this.props.total + 1;
+  //   console.log(total);
+
+  //   return total;
+  // }
+
   render() {
     return (
       <div>
         <h1>Please leave feedback</h1>
-        <ul>
+        <ul className='button__list'>
           <Buttons
             props={this.state}
             onUpdateStatistic={this.updateStatistic}
@@ -44,14 +54,17 @@ export class Feedback extends Component {
         </ul>
 
         <h2>Statistics</h2>
-        <ul>
+        <ul className='statistics__list'>
           <Statistics
             good={this.state.good}
             neutral={this.state.neutral}
             bad={this.state.bad}
+            total={this.props.total}
           />
         </ul>
       </div>
     );
   }
 }
+
+export default Feedback;
