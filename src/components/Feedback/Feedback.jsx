@@ -10,6 +10,7 @@ class Feedback extends Component {
     neutral: 0,
     bad: 0,
     total: 0,
+    percents: 0,
   };
 
   static propTypes = {
@@ -17,6 +18,7 @@ class Feedback extends Component {
     good: PropTypes.number.isRequired,
     neutral: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired,
+    percents: PropTypes.number.isRequired,
   };
 
   state = {
@@ -25,9 +27,16 @@ class Feedback extends Component {
     bad: this.props.bad,
   };
 
+  total = {
+    total: this.props.total,
+  }
+
+  percents = {
+    percents: this.props.percents,
+  }
+
   updateStatistic = e => {
     const value = e.target.textContent;
-
     return this.setState(prevState => {
       return {
         [value]: prevState[value] + 1,
@@ -35,14 +44,18 @@ class Feedback extends Component {
     });
   };
 
-  // countTotalFeedback() {
-  //   let total = this.props.total + 1;
-  //   console.log(total);
+  countTotalFeedback() {
+    this.total = this.state.good + this.state.neutral + this.state.bad;    
+  }
 
-  //   return total;
-  // }
+  countPositiveFeedbackPercentage() {
+    this.percents = Math.round((this.state.good / this.total) * 100) + ' %';
+  }
 
   render() {
+    this.countTotalFeedback()
+    this.countPositiveFeedbackPercentage()
+
     return (
       <div>
         <h1>Please leave feedback</h1>
@@ -59,8 +72,10 @@ class Feedback extends Component {
             good={this.state.good}
             neutral={this.state.neutral}
             bad={this.state.bad}
-            total={this.props.total}
+            total={this.total}
+            percents={this.percents}
           />
+          
         </ul>
       </div>
     );
