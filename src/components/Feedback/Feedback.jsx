@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import Buttons from './Buttons';
+import Section from './Section';
+import FeedbackOptions from './FeedbackOptions';
 import Statistics from './Statistics';
+import Notification from './Notification';
 import './Feedback.css';
 
 class Feedback extends Component {
@@ -11,6 +13,7 @@ class Feedback extends Component {
     bad: 0,
     total: 0,
     percents: 0,
+    message: 'There is no feedback',
   };
 
   static propTypes = {
@@ -19,6 +22,8 @@ class Feedback extends Component {
     neutral: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired,
     percents: PropTypes.number.isRequired,
+    message: PropTypes.string.isRequired,
+    title: PropTypes.string,
   };
 
   state = {
@@ -26,14 +31,6 @@ class Feedback extends Component {
     neutral: this.props.neutral,
     bad: this.props.bad,
   };
-
-  total = {
-    total: this.props.total,
-  }
-
-  percents = {
-    percents: this.props.percents,
-  }
 
   updateStatistic = e => {
     const value = e.target.textContent;
@@ -45,38 +42,39 @@ class Feedback extends Component {
   };
 
   countTotalFeedback() {
-    this.total = this.state.good + this.state.neutral + this.state.bad;    
+    const {good, neutral, bad} = this.state;
+    this.total = good + neutral + bad;    
   }
 
   countPositiveFeedbackPercentage() {
-    this.percents = Math.round((this.state.good / this.total) * 100) + ' %';
+    const { good } = this.state;
+    this.percents = Math.round((good / this.total) * 100) + ' %';
   }
 
   render() {
     this.countTotalFeedback()
     this.countPositiveFeedbackPercentage()
 
+    const {good, neutral, bad} = this.state;
+    const checkHideOrNot = good + neutral + bad;
+
     return (
       <div>
-        <h1>Please leave feedback</h1>
-        <ul className='button__list'>
-          <Buttons
-            props={this.state}
-            onUpdateStatistic={this.updateStatistic}
-          />
-        </ul>
+        <Section title={"Please leave feedback"}>
+          <FeedbackOptions options={this.state} onLeaveFeedback={this.updateStatistic} />
+        </Section>
 
-        <h2>Statistics</h2>
-        <ul className='statistics__list'>
+        <Section title={"Statistics"}>
+          {checkHideOrNot >= 1 ?
           <Statistics
-            good={this.state.good}
-            neutral={this.state.neutral}
-            bad={this.state.bad}
+            good={good}
+            neutral={neutral}
+            bad={bad}
             total={this.total}
-            percents={this.percents}
+            positivePercentage={this.percents}
           />
-          
-        </ul>
+          : <Notification message={"There is no feedback"} />}    
+        </Section>
       </div>
     );
   }
